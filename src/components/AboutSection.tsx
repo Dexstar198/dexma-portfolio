@@ -48,8 +48,9 @@ const AboutSection = () => {
             </h3>
             <p className="text-muted-foreground leading-relaxed mb-4">
               I'm a passionate Minecraft server developer with extensive experience in building,
-              configuring, and managing high-quality Minecraft servers. From custom plugin setups
-              to full server infrastructure, I bring creative visions to life in the blocky world.
+              configuring, and managing high-quality Minecraft servers. I love making
+              <span className="text-primary font-medium"> Skript scripts</span> and I'm an expert
+              with over 1 year of experience crafting unique server experiences.
             </p>
             <p className="text-muted-foreground leading-relaxed">
               With a deep understanding of server architecture and gameplay design,
