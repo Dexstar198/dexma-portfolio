@@ -1,4 +1,6 @@
 import { useEffect, useRef } from "react";
+import { motion } from "framer-motion";
+import minecraftBg from "@/assets/minecraft-bg.jpg";
 
 interface Particle {
   x: number;
@@ -31,15 +33,15 @@ const ParticleBackground = () => {
 
     const createParticles = () => {
       particles = [];
-      const count = Math.floor((canvas.width * canvas.height) / 8000);
+      const count = Math.floor((canvas.width * canvas.height) / 12000);
       for (let i = 0; i < count; i++) {
         particles.push({
           x: Math.random() * canvas.width,
           y: Math.random() * canvas.height,
           size: Math.random() * 2 + 0.5,
-          speedX: (Math.random() - 0.5) * 0.3,
-          speedY: (Math.random() - 0.5) * 0.3,
-          opacity: Math.random() * 0.5 + 0.1,
+          speedX: (Math.random() - 0.5) * 0.2,
+          speedY: -(Math.random() * 0.3 + 0.1),
+          opacity: Math.random() * 0.4 + 0.1,
           twinkleSpeed: Math.random() * 0.02 + 0.005,
           twinkleOffset: Math.random() * Math.PI * 2,
         });
@@ -62,10 +64,7 @@ const ParticleBackground = () => {
         const twinkle = Math.sin(time * p.twinkleSpeed * 10 + p.twinkleOffset) * 0.5 + 0.5;
         const alpha = p.opacity * twinkle;
 
-        const isPurple = Math.random() > 0.5;
-        ctx.fillStyle = isPurple
-          ? `hsla(263, 70%, 65%, ${alpha})`
-          : `hsla(217, 91%, 60%, ${alpha})`;
+        ctx.fillStyle = `hsla(45, 80%, 75%, ${alpha})`;
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
         ctx.fill();
@@ -90,11 +89,23 @@ const ParticleBackground = () => {
   }, []);
 
   return (
-    <canvas
-      ref={canvasRef}
-      className="fixed inset-0 pointer-events-none z-0"
-      aria-hidden="true"
-    />
+    <div className="fixed inset-0 z-0">
+      <motion.img
+        src={minecraftBg}
+        alt=""
+        aria-hidden="true"
+        initial={{ scale: 1.1 }}
+        animate={{ scale: 1 }}
+        transition={{ duration: 20, repeat: Infinity, repeatType: "reverse", ease: "linear" }}
+        className="absolute inset-0 w-full h-full object-cover"
+      />
+      <div className="absolute inset-0 bg-background/80 backdrop-blur-[2px]" />
+      <canvas
+        ref={canvasRef}
+        className="absolute inset-0 pointer-events-none"
+        aria-hidden="true"
+      />
+    </div>
   );
 };
 
