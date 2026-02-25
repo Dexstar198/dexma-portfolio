@@ -52,8 +52,8 @@ const AboutSection = () => {
               to full server infrastructure, I bring creative visions to life in the blocky world.
             </p>
             <p className="text-muted-foreground leading-relaxed">
-              As the <span className="text-primary font-medium">Head Developer at BasakMC</span>,
-              I lead the technical development of one of the most ambitious Minecraft server projects,
+              With a deep understanding of server architecture and gameplay design,
+              I lead technical development on ambitious projects,
               crafting unique gameplay experiences for thousands of players.
             </p>
           </motion.div>
