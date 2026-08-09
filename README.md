@@ -1,73 +1,87 @@
-# Welcome to your Lovable project
+# Dexma Portfolio
 
-## Project info
+Portfolio site for Dexma — Minecraft server developer, Head Developer at BasakMC.
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+Built with Vite + React 18 + TypeScript + Tailwind CSS + shadcn/ui. It is a fully static single-page app (no backend required).
 
-## How can I edit this code?
-
-There are several ways of editing your application.
-
-**Use Lovable**
-
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
-
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
+## Local development
 
 ```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+npm install
+npm run dev        # http://localhost:8080
 ```
 
-**Edit a file directly in GitHub**
+## Production build
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+```sh
+npm run build      # outputs static files to ./dist
+npm run start      # serves ./dist on $PORT (default 3000)
+```
 
-**Use GitHub Codespaces**
+`npm run start` uses `serve -s dist`, which binds to `0.0.0.0:$PORT` and rewrites all unknown paths to `index.html` so client-side routes work on refresh/deep links.
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+Requirements: Node.js >= 18.18 (see `engines` and `.nvmrc`, which pins Node 20).
 
-## What technologies are used for this project?
+---
 
-This project is built with:
+## Deploy to Vercel
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+Vercel serves the static build from its CDN — no server process, so no `PORT` is involved.
 
-## How can I deploy this project?
+1. Push this repo to GitHub/GitLab/Bitbucket.
+2. Go to https://vercel.com/new and import the repository.
+3. Settings (Vercel auto-detects these from `vercel.json`; confirm they match):
+   - Framework Preset: **Vite**
+   - Build Command: `npm run build`
+   - Output Directory: `dist`
+   - Install Command: `npm install`
+   - Node.js Version: **20.x** (Project Settings → General)
+4. Environment Variables: **none required.** If you later add any, they must be prefixed `VITE_` to be readable in the browser, and must be added for the Production/Preview/Development environments you need.
+5. Click **Deploy**. Subsequent pushes to the default branch deploy automatically.
 
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
+`vercel.json` already includes the SPA rewrite (`/(.*) → /index.html`) and long-lived cache headers for hashed assets.
 
-## Can I connect a custom domain to my Lovable project?
+### CLI alternative
 
-Yes, you can!
+```sh
+npm i -g vercel
+vercel          # preview deploy
+vercel --prod   # production deploy
+```
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+---
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+## Deploy to Railway
+
+Railway runs a real Node process, so the app must listen on Railway's injected `PORT` — `npm run start` does exactly that.
+
+1. Push this repo to GitHub.
+2. Go to https://railway.app → **New Project** → **Deploy from GitHub repo** → pick this repo.
+3. Railway reads `railway.json` and uses:
+   - Builder: **Nixpacks**
+   - Build Command: `npm install && npm run build`
+   - Start Command: `npm run start`
+   (A `Procfile` with the same start command is included as a fallback.)
+4. Environment Variables (Service → Variables):
+   - `PORT` — **do not set it manually**; Railway injects it. The app falls back to `3000` locally.
+   - `NODE_ENV=production` (optional but recommended)
+   - `NIXPACKS_NODE_VERSION=20` (optional; pins Node if Railway's default drifts)
+5. Networking → **Generate Domain** to get a public `*.up.railway.app` URL (or attach a custom domain).
+6. Deploy. Pushes to the connected branch redeploy automatically.
+
+### CLI alternative
+
+```sh
+npm i -g @railway/cli
+railway login
+railway link
+railway up
+```
+
+---
+
+## Troubleshooting
+
+- **Blank page on a deep link (404 on refresh):** the SPA fallback isn't active. On Vercel confirm `vercel.json` is committed; on Railway confirm the start command includes the `-s` flag.
+- **Railway build succeeds but deploy crashes:** ensure the start command is `npm run start` and that nothing hardcodes a port.
+- **Wrong Node version:** set `NIXPACKS_NODE_VERSION=20` (Railway) or Node 20.x in Project Settings (Vercel).
