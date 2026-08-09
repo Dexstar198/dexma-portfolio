@@ -1,14 +1,21 @@
 {
-  "name": "vite_react_shadcn_ts",
+  "name": "dexma-portfolio",
+  "version": "1.0.0",
+  "description": "Portfolio site for Dexma, Minecraft server developer and Head Developer at BasakMC.",
   "private": true,
-  "version": "0.0.0",
   "type": "module",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.18.0",
+    "npm": ">=9.0.0"
+  },
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "build:dev": "vite build --mode development",
+    "start": "serve -s dist -l tcp://0.0.0.0:${PORT:-3000}",
+    "preview": "vite preview --host --port ${PORT:-4173}",
     "lint": "eslint .",
-    "preview": "vite preview",
     "test": "vitest run",
     "test:watch": "vitest"
   },
@@ -58,6 +65,7 @@
     "react-resizable-panels": "^2.1.9",
     "react-router-dom": "^6.30.1",
     "recharts": "^2.15.4",
+    "serve": "^14.2.6",
     "sonner": "^1.7.4",
     "tailwind-merge": "^2.6.0",
     "tailwindcss-animate": "^1.0.7",
