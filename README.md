@@ -103,3 +103,5 @@ railway up
 - **Blank page on a deep link (404 on refresh):** the SPA fallback isn't active. On Vercel confirm `vercel.json` is committed; on Railway confirm the start command includes the `-s` flag.
 - **Railway build succeeds but deploy crashes:** ensure the start command is `npm run start` and that nothing hardcodes a port.
 - **Wrong Node version:** set `NIXPACKS_NODE_VERSION=20` (Railway) or Node 20.x in Project Settings (Vercel).
+
+> Note: the workflow file is also kept at `github-pages-workflow.yml` in the repo root because pushes from the Arena app can't create `.github/workflows/*`. Copy it to `.github/workflows/deploy.yml` yourself (via GitHub's web "Add file" UI or a local push) to activate deployment.
