@@ -24,6 +24,24 @@ Requirements: Node.js >= 18.18 (see `engines` and `.nvmrc`, which pins Node 20).
 
 ---
 
+## Deploy to GitHub Pages (primary)
+
+Live URL: **https://dexstar198.github.io/dexma-portfolio/**
+
+`.github/workflows/deploy.yml` builds and publishes automatically on every push to `main`.
+
+One-time setup: GitHub repo → **Settings → Pages → Build and deployment → Source: GitHub Actions**.
+
+Notes:
+- `vite.config.ts` sets `base: "/dexma-portfolio/"` for production builds (override with the `VITE_BASE` env var).
+- The router uses `basename={import.meta.env.BASE_URL}` so links work under the subpath.
+- The workflow copies `index.html` → `404.html` so deep links / refreshes work on Pages.
+- `public/.nojekyll` stops Jekyll from stripping files.
+
+Want the bare `https://dexstar198.github.io/` URL instead? Rename the repo to `Dexstar198.github.io` and set `base: "/"`.
+
+---
+
 ## Deploy to Vercel
 
 Vercel serves the static build from its CDN — no server process, so no `PORT` is involved.
