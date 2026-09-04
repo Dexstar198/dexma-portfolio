@@ -4,7 +4,10 @@ import path from "path";
 import { componentTagger } from "lovable-tagger";
 
 // https://vitejs.dev/config/
+// GitHub Pages project site is served from https://<user>.github.io/dexma-portfolio/
+// so assets need that base in production builds. Override with VITE_BASE if needed.
 export default defineConfig(({ mode }) => ({
+  base: process.env.VITE_BASE ?? (mode === "production" ? "/dexma-portfolio/" : "/"),
   server: {
     host: "::",
     port: 8080,

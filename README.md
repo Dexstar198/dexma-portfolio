@@ -24,6 +24,24 @@ Requirements: Node.js >= 18.18 (see `engines` and `.nvmrc`, which pins Node 20).
 
 ---
 
+## Deploy to GitHub Pages (primary)
+
+Live URL: **https://dexstar198.github.io/dexma-portfolio/**
+
+`.github/workflows/deploy.yml` builds and publishes automatically on every push to `main`.
+
+One-time setup: GitHub repo → **Settings → Pages → Build and deployment → Source: GitHub Actions**.
+
+Notes:
+- `vite.config.ts` sets `base: "/dexma-portfolio/"` for production builds (override with the `VITE_BASE` env var).
+- The router uses `basename={import.meta.env.BASE_URL}` so links work under the subpath.
+- The workflow copies `index.html` → `404.html` so deep links / refreshes work on Pages.
+- `public/.nojekyll` stops Jekyll from stripping files.
+
+Want the bare `https://dexstar198.github.io/` URL instead? Rename the repo to `Dexstar198.github.io` and set `base: "/"`.
+
+---
+
 ## Deploy to Vercel
 
 Vercel serves the static build from its CDN — no server process, so no `PORT` is involved.
@@ -85,3 +103,5 @@ railway up
 - **Blank page on a deep link (404 on refresh):** the SPA fallback isn't active. On Vercel confirm `vercel.json` is committed; on Railway confirm the start command includes the `-s` flag.
 - **Railway build succeeds but deploy crashes:** ensure the start command is `npm run start` and that nothing hardcodes a port.
 - **Wrong Node version:** set `NIXPACKS_NODE_VERSION=20` (Railway) or Node 20.x in Project Settings (Vercel).
+
+> Note: the workflow file is also kept at `github-pages-workflow.yml` in the repo root because pushes from the Arena app can't create `.github/workflows/*`. Copy it to `.github/workflows/deploy.yml` yourself (via GitHub's web "Add file" UI or a local push) to activate deployment.
